@@ -1,32 +1,53 @@
 ---
 title: "Untitled"
-author: "Henrique Capatto RA 146406"
+author: "Henrique Capatto, Murilo Salgado razoli RA 146406, 150987"
 date: "3 de setembro de 2016"
-output: pdf_document
+output: html_document
 ---
 
-```{r, include=TRUE}
+Para realizarmos os testes de igualdade de variâncias e os testes de médias, precisamos que as duas populações sejam independentes. Porém, na prática, temos algumas situações onde as populações não são independentes. Numa situação de comparação entre a mão direita e a mão esquerda, onde dois medem o número de cliques em um tempo de 30 segundos, a medida nesse experimento não são independentes porque vem da mesma unidade. Neste caso, utilizamos o teste $t$ pareado.
+
+Consideremos duas amostras dependentes $X_1,\ldots,X_n$ e $Y_1,\ldots,Y_n$. Neste caso consideraremos observações pareadas, isto é, podemos considerar que temos na realidade uma amostra de pares $(X_1,Y_1), \ldots, (X_n,Y_n)$. Vamos definir $D_i = X_i-Y_i$, para $i = 1,2,\ldots,n$. Assim obteremos a amostra $D_1,\ldots,D_n$, resultante das diferenças entre os valores de cada par. Aqui, apesar das amostras serem dependentes, vamos considerar que $D_i\sim N(\mu_D,\sigma_D^2)$.
+
+
+Para realizar o teste $t$ pareado devemos primeiramente estabelecer uma das hipóteses 
+$$
+\begin{cases}
+H_0 = \mu_D  \\
+H_1 > \mu_D 
+\end{cases}	
+$$
+
+O parâmetro $\mu_D$ será estimado pela média amostral das diferenças, ou seja, $ \overline{D} $, O parâmetro $\sigma_D^2$ será estimado pela variância amostral das diferenças, ou seja, 
+
+\[s_D^2=\frac{\sum_{i=1}^n(D_i-\overline{D})^2}{n-1}.\] 	
+
+O teste será realizado pela expressão 
+\[T=\frac{\overline{D}-\mu_D}{\frac{s_D}{\sqrt{n}}}\]
+
+
+```{r, echo = FALSE}
 
 #leitura dos dados
 
 amostra.tab = read.csv(file = file.choose(), header = T)
-#dados ordenados por quem comeÃ§ou com a mÃ£o direita
+#dados ordenados por quem começou com a mão direita
 
-comeÃ§o_direita=subset(amostra.tab,ordem==1)
+começo_direita=subset(amostra.tab,ordem==1)
 
-#dados ordenados por quem comeÃ§ou com a mÃ£o esquerda
+#dados ordenados por quem começou com a mão esquerda
 
-comeÃ§o_esquerda=subset(amostra.tab,ordem==0)
+começo_esquerda=subset(amostra.tab,ordem==0)
 
-#EstatÃ­stica bÃ¡sicas
+#Estatística básicas
 
-mi_dif_direta=mean(comeÃ§o_direita$dados.d-comeÃ§o_direita$dados.e)
+mi_dif_direta=mean(começo_direita$dados.d-começo_direita$dados.e)
 
-mi_dif_esquerda=mean(comeÃ§o_esquerda$dados.d-comeÃ§o_esquerda$dados.e)
+mi_dif_esquerda=mean(começo_esquerda$dados.d-começo_esquerda$dados.e)
 
-sigma_dif_direta=sd(comeÃ§o_direita$dados.d-comeÃ§o_direita$dados.e)
+sigma_dif_direta=sd(começo_direita$dados.d-começo_direita$dados.e)
 
-sigma_dif_esquerda=sd(comeÃ§o_esquerda$dados.d-comeÃ§o_esquerda$dados.e)
+sigma_dif_esquerda=sd(começo_esquerda$dados.d-começo_esquerda$dados.e)
 
 tabela_estat_bas=data.frame(mi_dif_direta,mi_dif_esquerda,sigma_dif_direta,sigma_dif_esquerda)
 
@@ -40,20 +61,4 @@ dif = amostra.tab$dados.d - amostra.tab$dados.e
 amostra.tab =  data.frame(amostra.tab,dif)
 
 t.test(amostra.tab$dados.d, amostra.tab$dados.e,paired=TRUE)
-
-```
-
-```{r, include=TRUE}
-
-
-```
-
-```{r, include=TRUE}
-
-
-```
-
-```{r, include=TRUE}
-
-
 ```
