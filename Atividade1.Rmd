@@ -45,7 +45,8 @@ T=\frac{\overline{D}-\mu_D}{\frac{s_D}{\sqrt{n}}}
 $$
 
 
-```{r, echo = TRUE}
+```{r}
+
 
 library("ggplot2")
 
